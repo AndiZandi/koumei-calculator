@@ -1,6 +1,7 @@
 'use client';
 
 import { DisplayItem } from '@/app/_components/DisplayItem';
+import { FatePearls } from '@/app/_components/FatePearls';
 import {
   isKoumeiItemWithSubItems,
   KoumeiItemName,
@@ -174,26 +175,29 @@ export default function Home() {
   }, [wantedKoumeiItems]);
 
   return (
-    <div className='p-8 flex flex-col gap-8 items-center'>
+    <div className='p-8 flex flex-col gap-8 items-center font-lex'>
       <div>
-        <h1 className='text-5xl'>KOUMEI CALCULATOR</h1>
+        <h1 className='text-5xl'>Koumei Calculator</h1>
       </div>
       <div className='w-full'>
         <div className='flex gap-4 items-center mb-8'>
-          <h2 className='text-2xl'>I want:</h2>
+          <h2 className='text-3xl'>I want:</h2>
           <button
             onClick={() => setWant(koumeiItems.map((item) => item.name))}
-            className='py-2 px-4 bg-red-950 rounded-lg hover:bg-red-900  text-white font-semibold active:bg-red-800'
+            className='py-2 px-4 bg-red-900 rounded-lg hover:bg-red-800  text-white font-semibold active:bg-red-700'
           >
-            everything!
+            Everything!
           </button>
         </div>
 
-        <div>
-          <p>Fate Pearls needed without any RNG drops: {totalPearlsNeeded}</p>
+        <div className='flex items-center '>
+          <FatePearls />
+          <p className='text-xl'>
+            Fate Pearls needed without any RNG drops: {totalPearlsNeeded}
+          </p>
         </div>
 
-        <div className='grid gap-8 grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7'>
+        <div className='grid gap-8 grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 mt-4'>
           {koumeiItems.map((item) => (
             <DisplayItem
               key={item.name}
@@ -206,16 +210,17 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <div className='w-full'>
+      <div className='w-full mt-8'>
         <div className='flex justify-between'>
           <div>
             <div className='flex gap-4 items-center mb-8'>
-              <h2 className='text-2xl'>I have:</h2>
+              <h2 className='text-3xl'>I have:</h2>
             </div>
 
             <div>
-              <div className='flex gap-4 items-center'>
-                <p>Fate Pearls:</p>
+              <div className='flex gap-2 items-center'>
+                <FatePearls />
+                <p className='text-xl'>Fate Pearls:</p>
                 <input
                   type='number'
                   min={0}
@@ -225,19 +230,11 @@ export default function Home() {
                   className='rounded-lg px-3 py-2 bg-zinc-900 text-white border border-red-700 focus:outline-none focus:ring-2 focus:ring-red-900 transition'
                 />
               </div>
-              <p>Blueprints/Items in value of: {ownedPartsValue}</p>
-              <p>Combined value of: {ownedPartsValue + ownedFatePearls}</p>
-            </div>
-          </div>
-          <div>
-            <div className='flex gap-4 items-center mb-8'>
-              <h2 className='text-2xl'>YOU NEED:</h2>
-            </div>
-
-            <div>
-              <p>
-                Fate Pearls:{' '}
-                {totalPearlsNeeded - (ownedFatePearls + ownedPartsValue)}
+              <p className='text-xl'>
+                Blueprints/Items in value of: {ownedPartsValue}
+              </p>
+              <p className='text-xl'>
+                Combined value of: {ownedPartsValue + ownedFatePearls}
               </p>
             </div>
           </div>
@@ -281,6 +278,34 @@ export default function Home() {
                 }
               />
             ))}
+        </div>
+      </div>
+
+      <div className='w-full mt-8'>
+        <div>
+          <div className='flex gap-4 items-center mb-8'>
+            <h2 className='text-3xl'>I need:</h2>
+          </div>
+          <div>
+            <p className='text-xl flex items-center gap-2'>
+              {totalPearlsNeeded - (ownedFatePearls + ownedPartsValue)} more
+              <FatePearls />
+              Fate Pearls, this equals roughly{' '}
+              {Math.ceil(
+                (totalPearlsNeeded - (ownedFatePearls + ownedPartsValue)) / 16
+              )}{' '}
+              shrine runs, or{' '}
+              {Math.ceil(
+                (totalPearlsNeeded - (ownedFatePearls + ownedPartsValue)) / 22
+              )}{' '}
+              Steelpath runs
+            </p>
+            <p className='text-xl flex items-center gap-2'>
+              {totalPearlsNeeded - ownedPartsValue} total
+              <FatePearls />
+              Fate Pearls
+            </p>
+          </div>
         </div>
       </div>
     </div>
